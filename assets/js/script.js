@@ -41,8 +41,9 @@ function searchApi(query) {
           //resultContentEl.innerHTML = '<h3>No results found, search again!</h3>';
         } else {
           //If a result was returned, the result can be passed to a function to print the results to the page
-          printWeather(locRes);
-
+          
+          //printWeather(locRes);
+            return locRes;
   
        }
       })
