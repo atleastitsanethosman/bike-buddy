@@ -1,3 +1,4 @@
+
 function searchApi(query) {
     // This function takes the city name as the input and 
     // calls the openweathermap API to get today's data
@@ -23,7 +24,7 @@ function searchApi(query) {
     // city name that the function receives in 'query' and 
     // appends the apiKey (which includes a request for Imperial units)
     locQueryUrl = locQueryUrl + '?q=' + query + apiKey;
-  
+    console.log(locQueryUrl);
     //The fetch function calls the API with the URL that was built above
     fetch(locQueryUrl)
       .then(function (response) {
@@ -41,13 +42,38 @@ function searchApi(query) {
           //resultContentEl.innerHTML = '<h3>No results found, search again!</h3>';
         } else {
           //If a result was returned, the result can be passed to a function to print the results to the page
-          
+          console.log(locRes.name);
+          city.name = locRes.name;
+          city.lon = locRes.coord.lon;
+          city.lat = locRes.coord.lat;
+          console.log(city);
           //printWeather(locRes);
-            return locRes;
-  
+            // return locRes;
+            // console.log(locRes.name);
+            bikeWise(city);
        }
       })
-      .catch(function (error) {
+      .catch (function (error) {
         console.error(error);
       });
   }
+
+  // function to pull incidents from bikewise API, takes Lat and Lon from Weatherwise call.
+function bikeWise(city) {
+  // data from weatherwise call
+  var proximity = city.lat + "," + city.lon;
+  // URL inputting lattitude and Longitude from Query above.
+  var bikeWiseURL = "https://bikewise.org:443/api/v2/locations?proximity=" + proximity + "&proximity_square=5&limit=100";
+  // fetch command to get data from bikewise API
+  fetch (bikeWiseURL)
+  .then(function (response) {
+    console.log(response);
+    return response.json();
+  })
+  .then (function (data){
+    console.log(data);
+    return data;
+  })
+}
+// uncomment to call search API to test functionality.
+// searchApi('chicago');
