@@ -1,3 +1,40 @@
+weatherEl = document.querySelector(".weather");
+
+function publishWeather(weatherObj){
+  // Fill in the date
+  var todayDate = moment.unix(weatherObj.dt + weatherObj.timezone).format("MMM D, YYYY");
+  dateEl = document.querySelector("header");
+  dateEl.children[1].textContent = todayDate;
+
+  weatherEl.children[0].textContent = "Today's Weather";
+
+  var weatherIcon = weatherObj.weather[0].icon;
+  var weatherTemp = weatherObj.main.temp;
+  var weatherHumid = weatherObj.main.humidity;
+
+  iconEl = document.createElement('img');
+  iconEl.src = "http://openweathermap.org/img/wn/" + weatherIcon + "@2x.png";
+  iconDiv = document.createElement('div');
+  iconDiv.classList.add('center-align');
+  iconDiv.classList.add("icon");
+  iconDiv.append(iconEl);
+  
+  tempEl = document.createElement('div');
+  tempEl.classList.add("temp");
+  tempEl.classList.add("center-align");
+  tempEl.textContent = Math.round(weatherTemp) + " °F";
+
+  humidEl = document.createElement('div');
+  humidEl.classList.add("humid");
+  humidEl.classList.add("center-align");
+  humidEl.textContent = weatherHumid + " %";
+
+  weatherEl.append(iconDiv, tempEl, humidEl);
+
+
+
+}
+
 function searchApi(query) {
     // This function takes the city name as the input and 
     // calls the openweathermap API to get today's data
@@ -23,6 +60,8 @@ function searchApi(query) {
     // city name that the function receives in 'query' and 
     // appends the apiKey (which includes a request for Imperial units)
     locQueryUrl = locQueryUrl + '?q=' + query + apiKey;
+
+    console.log(locQueryUrl);
   
     //The fetch function calls the API with the URL that was built above
     fetch(locQueryUrl)
@@ -43,7 +82,8 @@ function searchApi(query) {
           //If a result was returned, the result can be passed to a function to print the results to the page
           
           //printWeather(locRes);
-            return locRes;
+          console.log(locRes.name);
+          publishWeather(locRes);
   
        }
       })
@@ -51,3 +91,9 @@ function searchApi(query) {
         console.error(error);
       });
   }
+
+  // Code testing script
+  console.log("Start running the script");
+
+  searchApi('Chicago');
+
