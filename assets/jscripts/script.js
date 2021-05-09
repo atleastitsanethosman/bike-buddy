@@ -1,6 +1,9 @@
-weatherEl = document.querySelector(".weather");
-recentEl = document.querySelector(".recent-searches");
-searchBarEl = document.querySelector(".city-input");
+var weatherEl = document.querySelector(".weather");
+var recentEl = document.querySelector(".recent-searches");
+var searchBarEl = document.querySelector(".city-input");
+var cityList = [];
+// Set the number of recent searches to keep
+var historyLength = 8;
 
 function publishWeather(weatherObj){
 // Function to parse the weather object and publish the data to the page
@@ -10,10 +13,16 @@ function publishWeather(weatherObj){
   var todayDate = moment.unix(weatherObj.dt + weatherObj.timezone).format("MMM D, YYYY");
   dateEl = document.querySelector("header");
   dateEl.children[1].textContent = todayDate;
-
+  // Clear old previous weather
+  while (weatherEl.firstChild) {
+    weatherEl.removeChild(weatherEl.firstChild);
+  }
   // Get the element for the weather section
   // Change the header text
-  weatherEl.children[0].textContent = "Today's Weather";
+  var weatherHeadingEl = document.createElement('h5')
+  weatherHeadingEl.classList.add('center-align');
+  weatherHeadingEl.textContent = "Today's Weather";
+  weatherEl.append(weatherHeadingEl);
 
   // Get the relavent data from the weather object
   var weatherIcon = weatherObj.weather[0].icon;
@@ -93,6 +102,7 @@ function searchApi(query) {
           city.lon = locRes.coord.lon;
           city.lat = locRes.coord.lat;
           console.log(city);
+          handleSaveData(city.name);
           publishWeather(locRes);
           bikeWise(city);
        }
@@ -120,6 +130,41 @@ function bikeWise(city) {
   })
 }
 
+function getLocalStorage(){
+  // We want to get a list of cities from local storage
+  var cityList = JSON.parse(localStorage.getItem("cityList"));
+  if (cityList.length !== 0) {
+    var recentEl = document.querySelector('.recent-searches');
+    var cityEl = [];
+    for (var i = 0; i < cityList.length; i++) {
+      // The children of these particular divs need to be clickable elements
+      cityEl[i] = document.createElement('button');
+      cityEl[i].classList.add('btn');
+      cityEl[i].setAttribute('data-name', cityList[i]);
+      cityEl[i].textContent = cityList[i];
+      recentEl.append(cityEl[i]);
+
+    }
+  }
+}
+
+function handleSaveData(city) {
+  if (!cityList.includes(city)) {
+    // Add city to the top of the list
+    cityList.unshift(city);
+  } else {
+    pos = cityList.indexOf(city);
+    cityList.splice(pos, 1);
+    cityList.unshift(city);
+  }
+
+  cityList.splice(historyLength, cityList.length - historyLength);
+
+  // Store the list
+  localStorage.setItem("cityList", JSON.stringify(cityList));
+
+}
+
 function handleSearchFormSubmit(event) {
   event.preventDefault();
 
@@ -133,6 +178,20 @@ function handleSearchFormSubmit(event) {
   searchApi(cityName);
 }
 
-// uncomment to call search API to test functionality.
-//searchApi('chicago');
+function handleSearchHistorySubmit(event) {
+  event.preventDefault();
+
+  var element = event.target;
+
+  if (element.matches("button")) {
+    var city = element.getAttribute("data-name");
+  }
+
+  searchApi(city);
+}
+
+getLocalStorage();
+
 searchBarEl.addEventListener('submit', handleSearchFormSubmit);
+
+recentEl.addEventListener('click', handleSearchHistorySubmit);
