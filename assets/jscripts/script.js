@@ -1,3 +1,47 @@
+weatherEl = document.querySelector(".weather");
+
+function publishWeather(weatherObj){
+// Function to parse the weather object and publish the data to the page
+// Needs styling classes defined and added to the <div> tags to implement the styling
+
+  // Fill in the date in the header
+  var todayDate = moment.unix(weatherObj.dt + weatherObj.timezone).format("MMM D, YYYY");
+  dateEl = document.querySelector("header");
+  dateEl.children[1].textContent = todayDate;
+
+  // Get the element for the weather section
+  // Change the header text
+  weatherEl.children[0].textContent = "Today's Weather";
+
+  // Get the relavent data from the weather object
+  var weatherIcon = weatherObj.weather[0].icon;
+  var weatherTemp = weatherObj.main.temp;
+  var weatherHumid = weatherObj.main.humidity;
+
+  // Build the weather icon element (<img> tag inside a <div> tag)
+  iconEl = document.createElement('img');
+  iconEl.src = "http://openweathermap.org/img/wn/" + weatherIcon + "@2x.png";
+  iconDiv = document.createElement('div');
+  iconDiv.classList.add('center-align');
+  iconDiv.classList.add("icon");
+  iconDiv.append(iconEl);
+  
+  // Build the temperature element (<div> tag)
+  tempEl = document.createElement('div');
+  tempEl.classList.add("temp");
+  tempEl.classList.add("center-align");
+  tempEl.textContent = Math.round(weatherTemp) + " °F";
+
+  // Build the humidity element (<div> tag)
+  humidEl = document.createElement('div');
+  humidEl.classList.add("humid");
+  humidEl.classList.add("center-align");
+  humidEl.textContent = weatherHumid + " %";
+
+  // Append the three elements defined above to the weather element
+  weatherEl.append(iconDiv, tempEl, humidEl);
+
+}
 
 function searchApi(query) {
     // This function takes the city name as the input and 
@@ -47,10 +91,8 @@ function searchApi(query) {
           city.lon = locRes.coord.lon;
           city.lat = locRes.coord.lat;
           console.log(city);
-          //printWeather(locRes);
-            // return locRes;
-            // console.log(locRes.name);
-            bikeWise(city);
+          publishWeather(locRes);
+          bikeWise(city);
        }
       })
       .catch (function (error) {
@@ -76,4 +118,4 @@ function bikeWise(city) {
   })
 }
 // uncomment to call search API to test functionality.
-// searchApi('chicago');
+searchApi('chicago');
