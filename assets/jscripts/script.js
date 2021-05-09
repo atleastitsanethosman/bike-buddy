@@ -1,4 +1,6 @@
 weatherEl = document.querySelector(".weather");
+recentEl = document.querySelector(".recent-searches");
+searchBarEl = document.querySelector(".city-input");
 
 function publishWeather(weatherObj){
 // Function to parse the weather object and publish the data to the page
@@ -117,5 +119,20 @@ function bikeWise(city) {
     return data;
   })
 }
+
+function handleSearchFormSubmit(event) {
+  event.preventDefault();
+
+  var cityName = searchBarEl.children[0].children[2].value;
+
+  if (!cityName){
+    console.error('You need a search input value!');
+    return;
+  }
+
+  searchApi(cityName);
+}
+
 // uncomment to call search API to test functionality.
-searchApi('chicago');
+//searchApi('chicago');
+searchBarEl.addEventListener('submit', handleSearchFormSubmit);
