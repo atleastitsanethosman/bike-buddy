@@ -116,8 +116,8 @@ function searchApi(query) {
 function bikeWise(city) {
   // data from weatherwise call
   var proximity = city.lat + "," + city.lon;
-  // URL inputting lattitude and Longitude from Query above.
-  var bikeWiseURL = "https://bikewise.org:443/api/v2/locations?proximity=" + proximity + "&proximity_square=5&limit=100";
+  // URL inputting lattitude and Longitude from Query above, 25 at end of URL is max of results.
+  var bikeWiseURL = "https://bikewise.org:443/api/v2/incidents?page=1&per_page=25&proximity=" + proximity + "&proximity_square=5";
   // fetch command to get data from bikewise API
   fetch (bikeWiseURL)
   .then(function (response) {
@@ -125,15 +125,39 @@ function bikeWise(city) {
     return response.json();
   })
   .then (function (data){
+    // empty area of previous incidents to reset list.
+    $('#bikeIncidents').empty();
     console.log(data);
-    return data;
+    // code to create a series of cards for the incidents from bikewise.
+    for (var i = 0; i< data.incidents.length; i++) {
+    var incident = $('<div>').addClass('card');
+    var incidentContent = $('<div>').addClass('card-content');
+    // add title to card consisting of incident type and title of report.
+    var title = $('<span>').addClass('card-title');
+    title.text(data.incidents[i].type + ": " + data.incidents[i].title);
+    incidentContent.append(title);
+    incident.append(incidentContent);
+    // add description from bikewise incident to card.
+    var description = $('<p>').text(data.incidents[i].description);
+    incident.append(description);
+    // add date incident occurred to footer of card.
+    var date = $('<div>').addClass('card-action');
+    date.text('occurred: ' + moment.unix(data.incidents[i].occurred_at).format('l'))
+    incident.append(date);
+    // add data about address this occurred at to footer of card.
+    var address = $('<div>').addClass('card-action');
+    address.text('Address: ' + data.incidents[i].address);
+    incident.append(address);
+    // append cards to page.
+    $('#bikeIncidents').append(incident);
+    };
   })
 }
 
 function getLocalStorage(){
   // We want to get a list of cities from local storage
   var cityList = JSON.parse(localStorage.getItem("cityList"));
-  if (cityList.length !== 0) {
+  if (cityList !== null) {
     var recentEl = document.querySelector('.recent-searches');
     var cityEl = [];
     for (var i = 0; i < cityList.length; i++) {
