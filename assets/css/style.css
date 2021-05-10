@@ -6,6 +6,9 @@
     --orange: #fb8500;
   }
 
+  * {
+    font-family: 'Quicksand', sans-serif;
+  }
 
 .headerStyle {
     background-color: var(--prussianBlue);
@@ -22,4 +25,12 @@
     color: var(--prussianBlue);
     padding: 10px;
     margin: 10px;
+}
+
+.findBtn {
+   background-color: var(--honeyYellow); 
+}
+
+.findBtn:hover {
+    background-color: var(--blueGreen);
 }
