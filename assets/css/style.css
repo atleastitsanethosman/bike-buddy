@@ -1,0 +1,36 @@
+:root {
+    --cornflowerBlue: #8ecae6;
+    --blueGreen: #219ebc;
+    --prussianBlue: #023047;
+    --honeyYellow: #ffb703;
+    --orange: #fb8500;
+  }
+
+  * {
+    font-family: 'Quicksand', sans-serif;
+  }
+
+.headerStyle {
+    background-color: var(--prussianBlue);
+    color: var(--honeyYellow);
+    padding: 25px;
+}
+
+.bodyStyling{
+    background-color: var(--cornflowerBlue);
+}
+
+.subCat {
+    background-color: var(--blueGreen);
+    color: var(--prussianBlue);
+    padding: 10px;
+    margin: 10px;
+}
+
+.findBtn {
+   background-color: var(--honeyYellow); 
+}
+
+.findBtn:hover {
+    background-color: var(--blueGreen);
+}
