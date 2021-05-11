@@ -1,6 +1,6 @@
 var weatherEl = document.querySelector(".weather");
 var recentEl = document.querySelector(".recent-searches");
-var searchBarEl = document.querySelector(".city-input");
+var searchBarEl = document.querySelector(".findBtn");
 var myLocationEl = document.querySelector(".NearMe");
 var cityList = [];
 // Set the number of recent searches to keep
@@ -171,6 +171,12 @@ function getLocalStorage(){
   var cityList = JSON.parse(localStorage.getItem("cityList"));
   if (cityList !== null) {
     var recentEl = document.querySelector('.recent-searches');
+
+    // Remove current buttons
+    while (recentEl.firstChild){
+      recentEl.removeChild(recentEl.firstChild);
+    }
+
     var cityEl = [];
     for (var i = 0; i < cityList.length; i++) {
       // The children of these particular divs need to be clickable elements
@@ -186,32 +192,42 @@ function getLocalStorage(){
 }
 
 function handleSaveData(city) {
-  if (!cityList.includes(city)) {
-    // Add city to the top of the list
-    cityList.unshift(city);
-  } else {
-    pos = cityList.indexOf(city);
-    cityList.splice(pos, 1);
-    cityList.unshift(city);
+  var cityList = JSON.parse(localStorage.getItem("cityList"));
+  if (cityList !== null) {
+
+    console.log("CityList = ", cityList);
+    console.log("Save Data = ", city);
+    if (!cityList.includes(city)) {
+      // Add city to the top of the list
+      cityList.unshift(city);
+    } else {
+      pos = cityList.indexOf(city);
+      cityList.splice(pos, 1);
+      cityList.unshift(city);
+    }
+
+    cityList.splice(historyLength, cityList.length - historyLength);
   }
-
-  cityList.splice(historyLength, cityList.length - historyLength);
-
   // Store the list
   localStorage.setItem("cityList", JSON.stringify(cityList));
+
+  getLocalStorage();
 
 }
 
 function handleSearchFormSubmit(event) {
   event.preventDefault();
-
-  var cityName = searchBarEl.children[0].children[2].value;
+  inputValue = document.querySelector('#city');
+  var cityName = inputValue.value;
 
   if (!cityName){
     console.error('You need a search input value!');
     return;
   }
+  
+  inputValue.value = "";  
   var city = {name: cityName, lat: "", lon: ""};
+  console.log(city);
   searchApi(city);
 }
 
@@ -257,9 +273,9 @@ function myLocation(event) {
 
 getLocalStorage();
 
-searchBarEl.addEventListener('submit', handleSearchFormSubmit);
+searchBarEl.addEventListener('click', handleSearchFormSubmit);
 
 recentEl.addEventListener('click', handleSearchHistorySubmit);
-console.log("myLocationEl = ", myLocationEl);
+
 myLocationEl.addEventListener('click', myLocation);
 
