@@ -1,6 +1,7 @@
 var weatherEl = document.querySelector(".weather");
 var recentEl = document.querySelector(".recent-searches");
-var searchBarEl = document.querySelector(".city-input");
+var searchBarEl = document.querySelector(".findBtn");
+var myLocationEl = document.querySelector(".NearMe");
 var cityList = [];
 // Set the number of recent searches to keep
 var historyLength = 8;
@@ -20,7 +21,7 @@ function publishWeather(weatherObj){
   // Get the element for the weather section
   // Change the header text
   var weatherHeadingEl = document.createElement('h5')
-  weatherHeadingEl.classList.add('center-align');
+  weatherHeadingEl.classList.add('center-align', 'subCat');
   weatherHeadingEl.textContent = "Today's Weather";
   weatherEl.append(weatherHeadingEl);
 
@@ -61,7 +62,7 @@ function searchApi(query) {
     // api.openweathermap.org/data/2.5/weather?q={city name}&appid=ae645017a7275733894562a7a4d6f737
   
     // Start to building the URL shown above
-    var locQueryUrl = 'https://api.openweathermap.org/data/2.5/weather';
+    var locQueryUrl = 'https://api.openweathermap.org/data/2.5/';
   
     // This is Barry's appid, please don' share it.  
     //It includes a request for Imperial units
@@ -74,12 +75,22 @@ function searchApi(query) {
       lat: "",
       lon: ""
     };
+
+    console.log("query = ", query);
   
-    // This combines the start of the URL from above with the 
-    // city name that the function receives in 'query' and 
-    // appends the apiKey (which includes a request for Imperial units)
-    locQueryUrl = locQueryUrl + '?q=' + query + apiKey;
-    console.log(locQueryUrl);
+    if (query.name.length){
+
+      // This combines the start of the URL from above with the 
+      // city name that the function receives in 'query' and 
+      // appends the apiKey (which includes a request for Imperial units)
+      locQueryUrl = locQueryUrl + 'weather?q=' + query.name + apiKey;
+      console.log(locQueryUrl);
+
+    } else if (query.lat) {
+      // This query is for the case taht we have latitude and longitude but not a city name
+      locQueryUrl = locQueryUrl + 'weather?lat=' + query.lat + '&lon=' + query.lon + apiKey;
+      console.log(locQueryUrl);
+    }
     //The fetch function calls the API with the URL that was built above
     fetch(locQueryUrl)
       .then(function (response) {
@@ -92,6 +103,7 @@ function searchApi(query) {
       .then(function (locRes) {
         // The if statement checks to see if a city name has been returned
         // If not, it prints a message to the log and can add a message to a page if you set that up.
+
         if (!locRes.name.length) {
           console.log('No results found!');
           //resultContentEl.innerHTML = '<h3>No results found, search again!</h3>';
@@ -159,47 +171,64 @@ function getLocalStorage(){
   var cityList = JSON.parse(localStorage.getItem("cityList"));
   if (cityList !== null) {
     var recentEl = document.querySelector('.recent-searches');
+
+    // Remove current buttons
+    while (recentEl.firstChild){
+      recentEl.removeChild(recentEl.firstChild);
+    }
+
     var cityEl = [];
     for (var i = 0; i < cityList.length; i++) {
       // The children of these particular divs need to be clickable elements
       cityEl[i] = document.createElement('button');
-      cityEl[i].classList.add('btn');
+      cityEl[i].classList.add('btn-small', 'waves-effect', 'waves-light');
       cityEl[i].setAttribute('data-name', cityList[i]);
       cityEl[i].textContent = cityList[i];
       recentEl.append(cityEl[i]);
 
     }
   }
+ 
 }
 
 function handleSaveData(city) {
-  if (!cityList.includes(city)) {
-    // Add city to the top of the list
-    cityList.unshift(city);
-  } else {
-    pos = cityList.indexOf(city);
-    cityList.splice(pos, 1);
-    cityList.unshift(city);
+  var cityList = JSON.parse(localStorage.getItem("cityList"));
+  if (cityList !== null) {
+
+    console.log("CityList = ", cityList);
+    console.log("Save Data = ", city);
+    if (!cityList.includes(city)) {
+      // Add city to the top of the list
+      cityList.unshift(city);
+    } else {
+      pos = cityList.indexOf(city);
+      cityList.splice(pos, 1);
+      cityList.unshift(city);
+    }
+
+    cityList.splice(historyLength, cityList.length - historyLength);
   }
-
-  cityList.splice(historyLength, cityList.length - historyLength);
-
   // Store the list
   localStorage.setItem("cityList", JSON.stringify(cityList));
+
+  getLocalStorage();
 
 }
 
 function handleSearchFormSubmit(event) {
   event.preventDefault();
-
-  var cityName = searchBarEl.children[0].children[2].value;
+  inputValue = document.querySelector('#city');
+  var cityName = inputValue.value;
 
   if (!cityName){
     console.error('You need a search input value!');
     return;
   }
-
-  searchApi(cityName);
+  
+  inputValue.value = "";  
+  var city = {name: cityName, lat: "", lon: ""};
+  console.log(city);
+  searchApi(city);
 }
 
 function handleSearchHistorySubmit(event) {
@@ -208,14 +237,45 @@ function handleSearchHistorySubmit(event) {
   var element = event.target;
 
   if (element.matches("button")) {
-    var city = element.getAttribute("data-name");
+    var cityName = element.getAttribute("data-name");
   }
-
+  var city = {name: cityName, lat: "", lon: ""};
   searchApi(city);
 }
 
+function myLocation(event) {
+  event.preventDefault();
+
+  var element = event.target;
+  
+  var cityEl = document.querySelector("#city");
+
+  function success(position) {
+    var lat = position.coords.latitude;
+    var lon = position.coords.longitude;
+
+    city = {name: "", lat: lat, lon: lon};
+
+    searchApi(city);
+  }
+
+  function error() {
+    cityEl.textContent = "Location unavailable, please enter a city name";
+  }
+
+  if (!navigator.geolocation) {
+    cityEl.textContent = "Geolocation not supported, please enter a city name";
+  } else {
+    navigator.geolocation.getCurrentPosition(success, error);
+  }
+}
+
+
 getLocalStorage();
 
-searchBarEl.addEventListener('submit', handleSearchFormSubmit);
+searchBarEl.addEventListener('click', handleSearchFormSubmit);
 
 recentEl.addEventListener('click', handleSearchHistorySubmit);
+
+myLocationEl.addEventListener('click', myLocation);
+
