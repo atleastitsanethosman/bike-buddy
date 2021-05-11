@@ -11,58 +11,38 @@
 
     <title>Bike Buddy</title>
 </head>
-<body>
+<body class="bodyStyling">
     <header class="headerStyle">
         <h1 class="center-align">BikeBuddy</h1>
         <h4 class="center-align">Today's Date:</h4>
 
     </header>
     
-    <div class="row">
-        <div class="col s4">
-          <h5 class="center-align subCat">Enter City Name</h5>
-          <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Bike Buddy</title>
-        </head>
+<div class="row">
+ <div class="col s4">
+    <h5 class="center-align subCat">Search By City</h5>
+    <div class="input-field searchbar city-input" id="navbar">
+        <input placeholder="city name" id="city" type="text" class="validate" name="city" value="">
+        <input class="waves-effect waves-light btn-small findBtn" type="submit" value="Submit">
+        <input class="waves-effect waves-light btn-small findBtn NearMe" value="Find Near Me">
+    </div> 
+ </div>
+ <div class="col s4">
+    <h5 class="center-align subCat">Recent Locations</h5>
+        <div class="recent-searches"></div>
+ </div>
+ <div class="col s4 weather">
+    <h5 class="center-align subCat">Weather Area</h5>
+ </div>
+</div>
+          <div class="row">
+            <div class="col s12" id="bikeIncidents">
+                <h5 class="center-align subCat">List of Bike Incidents Near You</h5>
+          </div>
+          </div>
+          
 
-        <body class="bodyStyling"> 
-            <!-- Nav bar will display here-->
-            <section id="navbar">
-                
-            </section>
-        
-            <!--this is the container-->
-            <section id="container">
-        
-                <!--This is going to be the div for searchbar-->
-                <div class="searchbar">
-                    <div class="city-input">
-                        <form >
-                            <label for="city">city name:</label><br>
-                            <input type="text" id="city" name="city" value=""><br>
-                            <input class="waves-effect waves-light btn-small findBtn" type="submit" value="Submit">
-                        </form>
-                    </div>
-                    <div class="recent-searches">
-        
-                    </div>
-                </div>
-        
-        
-            </section>
-        
-        </body>
-        </div>
-        <div class= "weather col s4">
-          <h5 class="center-align subCat">Weather Area</h5>
-        </div>
-        <div class="col s4" id="bikeIncidents">
-          <h5 class="center-align">List of Bike Incidents Near You</h5>
-        </div>
-      </div>
+
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type = "text/JavaScript" src = " https://MomentJS.com/downloads/moment.js"></script>
