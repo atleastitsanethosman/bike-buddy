@@ -137,12 +137,19 @@ function bikeWise(city) {
     return response.json();
   })
   .then (function (data){
+    console.log(data)
     // empty area of previous incidents to reset list.
-    $('#bikeIncidents').empty();
-    console.log(data);
-    // code to create a series of cards for the incidents from bikewise.
+    $('#bikeIncidentsList').remove();
+    var bikeIncidentsList = $('<div>').attr('id','bikeIncidentsList');
+    $('#cityName').text(city.name);
+    // code to create a series of cards for the incidents from bikewise or message if nothing found.
+    if (data.incidents.length < 1) {
+      var noIncidents = $('<h3>').text('No Incidents found within 5 miles of ' + city.name);
+      bikeIncidentsList.append(noIncidents);
+    }
+    // for loop to create cards based on bikewise incident Data.
     for (var i = 0; i< data.incidents.length; i++) {
-    var incident = $('<div>').addClass('card');
+    var incident = $('<div>').addClass('card subCat');
     var incidentContent = $('<div>').addClass('card-content');
     // add title to card consisting of incident type and title of report.
     var title = $('<span>').addClass('card-title');
@@ -160,9 +167,11 @@ function bikeWise(city) {
     var address = $('<div>').addClass('card-action');
     address.text('Address: ' + data.incidents[i].address);
     incident.append(address);
-    // append cards to page.
-    $('#bikeIncidents').append(incident);
+    // append cards to new div to allow it to be cleared with new searches.
+    bikeIncidentsList.append(incident);
     };
+    // append incident list to page once for loop has completed.
+    $('#bikeIncidents').append(bikeIncidentsList);
   })
 }
 
