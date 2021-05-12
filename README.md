@@ -3,7 +3,7 @@ BikeBuddy the cyclist commuters best friend! This app will provide the user with
 
 # User Story
 AS a BICYCLE COMMUTER 
-I WANT to information about local obstacles
+I WANT information about local obstacles
 SO THAT I can plan a safe route
 
 AS a BICYCLE COMMUTER 
@@ -23,16 +23,16 @@ I WANT the ability to check the weather
 SO THAT I can plan the appropriate wardrobe/accessories
 
 # Acceptance Criteria 
-GIVEN a bicycle dash board with form inputs 
-WHEN I search for an city/area
+GIVEN a bicycle dashboard with form inputs 
+WHEN I search for a city/area
 THEN I am presented with information about local obstacles
 
-GIVEN a bicycle dash board with form inputs 
-WHEN I search for an city/area 
+GIVEN a bicycle dashboard with form inputs 
+WHEN I search for a city/area 
 THEN I am presented with information about local thefts
 
-GIVEN a bicycle dash board with form inputs 
-WHEN I search for an city/area 
+GIVEN a bicycle dashboard with form inputs 
+WHEN I search for a city/area 
 THEN that location is added to my search history
 
 WHEN I click on an area in my search history
@@ -40,18 +40,18 @@ THEN I am presented again with the latest information for that area
 
 
 # Installation
-API keys should be installed to full utilize application.
+API keys for openweathermap.org should be installed to fully utilize application.
 
 # Authors
-* Berry St Pierre - back end
-* Ian Hennssey -  back end
-* Jane Rapley - front end
-* Karl Stafford - front end
-* Lauren Marcienk - front end
+* Barry St Pierre - programming
+* Ian Hennssey -  programming
+* Jane Rapley - html & CSS
+* Karl Stafford - html & CSS
+* Lauren Marcienk - html & CSS
 
 # Built with
 * jQuery
 * Moment
 * Materialize
 * Bikewise API
-* OpenW*eather map
+* OpenWeatherMap
