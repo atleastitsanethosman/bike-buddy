@@ -200,6 +200,8 @@ function getLocalStorage(){
 
 function handleSaveData(city) {
   var cityList = JSON.parse(localStorage.getItem("cityList"));
+  console.log("CityList = ", cityList);
+  console.log("Save Data = ", city);
   if (cityList !== null) {
 
     console.log("CityList = ", cityList);
@@ -214,6 +216,8 @@ function handleSaveData(city) {
     }
 
     cityList.splice(historyLength, cityList.length - historyLength);
+  } else {
+    cityList = [city];
   }
   // Store the list
   localStorage.setItem("cityList", JSON.stringify(cityList));
