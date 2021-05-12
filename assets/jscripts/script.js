@@ -133,11 +133,9 @@ function bikeWise(city) {
   // fetch command to get data from bikewise API
   fetch (bikeWiseURL)
   .then(function (response) {
-    console.log(response);
     return response.json();
   })
   .then (function (data){
-    console.log(data)
     // empty area of previous incidents to reset list.
     $('#bikeIncidentsList').remove();
     var bikeIncidentsList = $('<div>').attr('id','bikeIncidentsList');
@@ -149,16 +147,16 @@ function bikeWise(city) {
     }
     // for loop to create cards based on bikewise incident Data.
     for (var i = 0; i< data.incidents.length; i++) {
-    var incident = $('<div>').addClass('card subCat');
+    var incident = $('<div>').addClass('card teal lighten-1 white-text');
     var incidentContent = $('<div>').addClass('card-content');
     // add title to card consisting of incident type and title of report.
     var title = $('<span>').addClass('card-title');
     title.text(data.incidents[i].type + ": " + data.incidents[i].title);
     incidentContent.append(title);
-    incident.append(incidentContent);
     // add description from bikewise incident to card.
     var description = $('<p>').text(data.incidents[i].description);
-    incident.append(description);
+    incidentContent.append(description);
+    incident.append(incidentContent);
     // add date incident occurred to footer of card.
     var date = $('<div>').addClass('card-action');
     date.text('occurred: ' + moment.unix(data.incidents[i].occurred_at).format('l'))
@@ -190,7 +188,7 @@ function getLocalStorage(){
     for (var i = 0; i < cityList.length; i++) {
       // The children of these particular divs need to be clickable elements
       cityEl[i] = document.createElement('button');
-      cityEl[i].classList.add('btn-small', 'waves-effect', 'waves-light');
+      cityEl[i].classList.add('btn-small', 'waves-effect', 'waves-light', 'col', 'l3', 'm6', 's12');
       cityEl[i].setAttribute('data-name', cityList[i]);
       cityEl[i].textContent = cityList[i];
       recentEl.append(cityEl[i]);
