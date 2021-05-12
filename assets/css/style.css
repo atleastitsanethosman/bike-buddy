@@ -35,3 +35,10 @@
     background-color: var(--blueGreen);
 }
 
+.recent-searches {
+    margin: 10px;
+}
+
+.searchbar {
+    margin: 10px;
+}
