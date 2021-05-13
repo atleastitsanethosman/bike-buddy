@@ -1,6 +1,10 @@
 # BikeBuddy
 BikeBuddy the cyclist commuters best friend! This app will provide the user with the weather, and bike incidents in their desired search area. This app will help daily commuters avoid dangerous areas, safety concerns, and closed down roads. Safe travels.
 
+https://bdstpierre.github.io/bike-buddy/
+
+![Image of BikeBuddy showing incidents for the lansing area](assets/images/screenshot.png)
+
 # User Story
 AS a BICYCLE COMMUTER 
 I WANT information about local obstacles
