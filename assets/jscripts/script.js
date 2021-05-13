@@ -188,7 +188,7 @@ function getLocalStorage(){
     for (var i = 0; i < cityList.length; i++) {
       // The children of these particular divs need to be clickable elements
       cityEl[i] = document.createElement('button');
-      cityEl[i].classList.add('btn-small', 'waves-effect', 'waves-light', 'col', 'l3', 'm6', 's12');
+      cityEl[i].classList.add('btn-small', 'waves-effect', 'waves-light', 'col', 'l4', 'm6', 's12');
       cityEl[i].setAttribute('data-name', cityList[i]);
       cityEl[i].textContent = cityList[i];
       recentEl.append(cityEl[i]);
