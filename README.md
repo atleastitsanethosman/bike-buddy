@@ -48,7 +48,7 @@ API keys for openweathermap.org should be installed to fully utilize application
 
 # Authors
 * Barry St Pierre - programming
-* Ian Hennssey -  programming
+* Ian Hennessey -  programming
 * Jane Rapley - html & CSS
 * Karl Stafford - html & CSS
 * Lauren Marcienk - html & CSS
