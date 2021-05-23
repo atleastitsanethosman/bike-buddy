@@ -59,3 +59,7 @@ API keys for openweathermap.org should be installed to fully utilize application
 * Materialize
 * Bikewise API
 * OpenWeatherMap
+
+## License:<br>
+Copyright (c) 2021 Ian Hennessey
+Licensed under the [MIT LICENSE](LICENSE)
